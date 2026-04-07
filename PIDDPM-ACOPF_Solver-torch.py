@@ -1538,7 +1538,7 @@ def run_power_flow_pypower(case118, state, action):
 
 
 def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_test, _pre_data_pinn):
-    """计算各种误差，包括新的指标：最大误差均值、成本百分比对比等"""
+    """计算各种误差"""
     pinn_p_error = 0
     pinn_q_error = 0
     pinn_cost_error = 0
@@ -1554,7 +1554,7 @@ def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_
     base_reactive_error = 0
     base_voltage_error = 0
     base_line_error = 0
-    base_avg_violation_error = 0  # 新增：平均越限误差
+    base_avg_violation_error = 0 
 
     # 新增：存储每个样本的误差（平均值，用于表格显示）
     pinn_active_errors = []
@@ -1567,7 +1567,7 @@ def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_
     base_reactive_errors = []
     base_voltage_errors = []
     base_cost_errors = []
-    base_avg_violation_errors = []  # 新增：存储每个样本的平均越限
+    base_avg_violation_errors = [] 
     
     # 计数成功运行的潮流计算
     pinn_success_count = 0
