@@ -1746,10 +1746,10 @@ def main():
     #                 print(f'验证损失: {temp_rmse:.4f}')
 
     # # # 保存模型
-    # # torch.save(DPPM_model.DDPM.state_dict(), './save_model/DDPM_based_model_118_small_scrach.pth')
+    # # torch.save(DPPM_model.DDPM.state_dict(), './save_model/DDPM_based_model_118_scrach.pth')
     # # print("模型已保存")        
     
-    # # DPPM_model.DDPM.load_state_dict(torch.load('./save_model/DDPM_based_model_118_small_scrach.pth'))
+    # # DPPM_model.DDPM.load_state_dict(torch.load('./save_model/DDPM_based_model_118_scrach.pth'))
     
     # ###
     # # PFM训练循环
@@ -1775,11 +1775,11 @@ def main():
     #         print(f'Epoch {epoch}/{total_epochs}, Loss: {avg_loss_2:.4f}, LR: {current_lr:.9f}')
     
     # # # 保存模型
-    # # torch.save(DPPM_model.PINN_PF.state_dict(), './save_model/PFM_based_model_118_small.pth')
+    # # torch.save(DPPM_model.PINN_PF.state_dict(), './save_model/PFM_based_model_118.pth')
     # # print("模型已保存")
     
 
-    # # DPPM_model.PINN_PF.load_state_dict(torch.load('./save_model/PFM_based_model_118_small.pth'))
+    # # DPPM_model.PINN_PF.load_state_dict(torch.load('./save_model/PFM_based_model_118.pth'))
 
     # '''
     # PFM微调训练循环
@@ -1803,10 +1803,10 @@ def main():
     #         print(f'Epoch {epoch}/{total_epochs}, Loss: {avg_loss_3:.4f}, LR: {current_lr:.9f}')
     
     # # # 保存模型
-    # # torch.save(DPPM_model.PINN_PF.state_dict(), './save_model/PFM_PINN_based_model_118_small.pth')
+    # # torch.save(DPPM_model.PINN_PF.state_dict(), './save_model/PFM_PINN_based_model_118.pth')
     # # print("模型已保存")
 
-    # # DPPM_model.PINN_PF.load_state_dict(torch.load('./save_model/PFM_PINN_based_model_118_small.pth'))
+    # # DPPM_model.PINN_PF.load_state_dict(torch.load('./save_model/PFM_PINN_based_model_118.pth'))
 
     # '''
     # Combined 微调训练循环
@@ -1843,8 +1843,8 @@ def main():
     
     #     # if epoch >= 200:
     #     #     break
-    # torch.save(DPPM_model.DDPM.state_dict(), './save_model/DDPM_based_model_118_small_finished_epoch_'+str(epoch)+'_scrach.pth')
-    # torch.save(DPPM_model.PINN_PF.state_dict(), './save_model/PFM_PINN_based_model_118_small_finished_epoch_'+str(epoch)+'_scrach.pth')
+    # torch.save(DPPM_model.DDPM.state_dict(), './save_model/DDPM_based_model_118_finished_epoch_'+str(epoch)+'_scrach.pth')
+    # torch.save(DPPM_model.PINN_PF.state_dict(), './save_model/PFM_PINN_based_model_118_finished_epoch_'+str(epoch)+'_scrach.pth')
 
     epoch = 50
     DPPM_model.DDPM.load_state_dict(torch.load('./save_model/DDPM_based_model_118_small_finished_epoch_'+str(epoch)+'_scrach.pth'))
