@@ -99,9 +99,8 @@ def calculate_ybus_(branch_data, num_buses, bus_data):
 
     return torch.tensor(Ybus, dtype=torch.complex64).to(device)
 
-# 优化的DDPM模型 - PyTorch版本
 class ResidualBlock(nn.Module):
-    """优化的残差块"""
+    """残差块"""
     def __init__(self, dim, hidden_dim=None, dropout=0.0):
         super().__init__()
         hidden_dim = hidden_dim or dim * 2
@@ -135,7 +134,6 @@ class TimeEmbedding(nn.Module):
         return emb
 
 class OptimizedDDPM(nn.Module):
-    """优化的DDPM模型 - PyTorch版本"""
     def __init__(self, act_dim, state_dim, hidden_dim=512, num_layers=6, time_dim=128):
         super().__init__()
         self.act_dim = act_dim
@@ -378,8 +376,6 @@ else:
     X_in_test[:, :NUM_GENERATORS] = X_in_test[:, :NUM_GENERATORS] / 100
     X_con_test = np.array(X_con_train_)[:1000, :] / 100
     X_other_information_test = np.array(X_other_information_train_)[:1000, :]
-
-# print(X_in_test[0,:])
 
 scaler_flag = 0 # 1进行归一化 0不进行归一化
 
@@ -728,8 +724,6 @@ class DPPMTrainer:
         """
         DDIM采样函数 - 固定总步数版本
         每个样本都采样num_steps步，从各自的t_t开始到0结束
-        
-        修改：避免原地操作，支持训练模式
         """
         if return_numpy:
             with torch.no_grad():
@@ -921,8 +915,7 @@ class DPPMTrainer:
                     original_idx = active_indices[idx].item()
                     completed[original_idx] = True
             
-            # 14. 更新活跃样本的状态 - 关键修改：避免原地操作
-            # 创建一个新的张量而不是原地修改
+            # 14. 更新活跃样本的状态
             new_z_samples = z_samples.clone()
             new_z_samples[active_indices] = z_samples_next
             z_samples = new_z_samples
@@ -951,7 +944,7 @@ class DPPMTrainer:
             noise = noise.to(device)
             z = z.to(device)
             y_0 = y_0.to(device)
-            torch.cuda.empty_cache()  # 建议只在需要时清理
+            torch.cuda.empty_cache()
 
             # === 阶段1: 训练DDPM的基础损失 ===
             # DPPM 不考虑物理信息预训练
@@ -962,9 +955,6 @@ class DPPMTrainer:
             loss_1.backward()
             optimizer_dppm.step()
             total_loss_1 += loss_1.item()
-
-            # print(y_t.min(),y_t.max())
-            # print(noise.min(),noise.max())
 
         num_batches = len(dataloader)
         avg_loss_1 = total_loss_1 / num_batches if num_batches > 0 else 0
@@ -981,7 +971,7 @@ class DPPMTrainer:
             noise = noise.to(device)
             z = z.to(device)
             y_0 = y_0.to(device)
-            torch.cuda.empty_cache()  # 建议只在需要时清理
+            torch.cuda.empty_cache()
 
             # === 阶段2: 训练pinn_pf ===
             self.model_PFM.train()
@@ -992,7 +982,6 @@ class DPPMTrainer:
             loss_2.backward()
             optimizer_dppm.step()
             total_loss_2 += loss_2.item()
-            # break
 
         # 计算平均损失
         num_batches = len(dataloader)
@@ -1010,7 +999,7 @@ class DPPMTrainer:
             noise = noise.to(device)
             z = z.to(device)
             y_0 = y_0.to(device)
-            torch.cuda.empty_cache()  # 建议只在需要时清理
+            torch.cuda.empty_cache()
 
             self.model_PFM.train()    
             optimizer_dppm.zero_grad()   
@@ -1164,7 +1153,7 @@ class LinearDecreaseScheduler:
             param_group['lr'] = lr            
         return lr
 
-# 学习率调度器 - 五段线性化版本（灵活配置）
+# 学习率调度器
 class FlexibleFiveStageScheduler:
     def __init__(self, optimizer, stage_epochs):
         """
@@ -1556,12 +1545,11 @@ def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_
     base_line_error = 0
     base_avg_violation_error = 0 
 
-    # 新增：存储每个样本的误差（平均值，用于表格显示）
     pinn_active_errors = []
     pinn_reactive_errors = []
     pinn_voltage_errors = []
     pinn_cost_errors = []
-    pinn_avg_violation_errors = []  # 新增：存储每个样本的平均越限
+    pinn_avg_violation_errors = []
     
     base_active_errors = []
     base_reactive_errors = []
@@ -1624,7 +1612,7 @@ def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_
     print(f"Power flow success counts - DDPM: {pinn_success_count}/{X_con_test.shape[0]}, BASE: {base_success_count}/{X_con_test.shape[0]}")
     print()
 
-    # 准备表格数据 - 只展示成本增益，其他指标显示N/A
+    # 准备表格数据
     metrics = ['有功越限', '无功越限', '电压越限', '线路越限', '平均越限', '成本']
     
     if pinn_success_count > 0:
@@ -1633,7 +1621,7 @@ def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_
             pinn_reactive_error/pinn_success_count,
             pinn_voltage_error/pinn_success_count,
             pinn_line_error/pinn_success_count,
-            np.mean(pinn_avg_violation_errors),  # 平均越限（所有约束一起平均）
+            np.mean(pinn_avg_violation_errors),
             pinn_cost_error/pinn_success_count
         ]
     else:
@@ -1645,7 +1633,7 @@ def calculate_errors(case118, X_con_test, X_pre, X_in_test, X_other_information_
             base_reactive_error/base_success_count,
             base_voltage_error/base_success_count,
             base_line_error/base_success_count,
-            np.mean(base_avg_violation_errors),  # 平均越限（所有约束一起平均）
+            np.mean(base_avg_violation_errors),
             base_cost_error/base_success_count
         ]
     else:
