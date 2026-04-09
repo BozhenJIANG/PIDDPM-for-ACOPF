@@ -15,7 +15,6 @@ Because of GitHub’s 25 MB file size limit, the dataset is not included in this
 - **`Distribution_Display.py`** – Visualizes the distribution of the generated data.  
 - **`Check_ACPF_Balance.py`** – Verifies the correctness of the generated data by checking power flow balance.  
 - **`PIDDPM-ACOPF_Solver-torch.py`** – Main training and evaluation script. Running this will produce results for the IEEE 118-bus system similar to those reported in the paper.  
-  > **Note:** The data distribution used in this code may differ slightly from the original paper, so the obtained ACOPF cost may vary marginally.
 
 ## Requirements
 
