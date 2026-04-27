@@ -512,6 +512,8 @@ def power_flow_equations_batch(case118, state, action, q, u, delta, q_u_delta, b
 
     P_injection = P_injection_[:, excep_balance_indices]
     Pg_all_new = Pg_all.clone()
+
+    # balance node
     bus_29_power = (P_load + torch.real(S_injection))[:, 29:30]  # [batch_size, 1]
     Pg_all_new[:, 29:30] = bus_29_power
 
