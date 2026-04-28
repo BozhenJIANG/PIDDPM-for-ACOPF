@@ -1058,7 +1058,7 @@ class DPPMTrainer:
             
             # 注意：这里可能需要调整权重
             loss_4 = (0 * losses[0] + 0 * losses[1] + 0 * losses[2] + 0 * losses[3] + 
-                    0.0000000001 * losses[4] + 1 * losses[5] + 1 * losses[6] + 1 * losses[7] + 
+                    0.000000001 * losses[4] + 1 * losses[5] + 1 * losses[6] + 1 * losses[7] + 
                     0 * losses[8] + 0 * losses[9] + 0 * losses[10] + 0 * losses[11])     
             
             # DDPM损失
