@@ -41,7 +41,7 @@ class BetaSiLU(nn.Module):
 
 class MinMaxSigmoid(nn.Module):
     def forward(self, x):
-        return 0.9399 + 0.1201 * torch.sigmoid(x)
+        return 0.9399999 + 0.1200001 * torch.sigmoid(x)
 
 def calculate_ybus(branch_data, num_buses, bus_data):
     Ybus = np.zeros((num_buses, num_buses), dtype=np.complex64)
@@ -1158,7 +1158,7 @@ class LinearDecreaseScheduler:
 class FlexibleFiveStageScheduler:
     def __init__(self, optimizer, stage_epochs):
         """
-        五段线性学习率调度器（灵活配置）
+        五段线性学习率调度器
         
         参数:
             optimizer: 优化器
@@ -1851,7 +1851,6 @@ def main():
         X_in_test_ori = scaler1.inverse_transform(X_in_test)
         pre_data_ddpm_ori = scaler1.inverse_transform(X_pre)
     else:
-        # 反归一化
         X_in_test_ori = X_in_test
         pre_data_ddpm_ori = X_pre
     
