@@ -1,13 +1,5 @@
 import numpy as np
-from tqdm import tqdm
-import logging
-# import tensorflow as tf
-import numpy as np
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-
 from case118 import *  
-import numpy as np
 
 def calculate_ybus(branch_data, num_buses, bus_data):
     # 计算导纳矩阵 Ybus
