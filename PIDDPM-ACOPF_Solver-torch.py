@@ -4,7 +4,6 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 from sklearn.preprocessing import MinMaxScaler
 import math
